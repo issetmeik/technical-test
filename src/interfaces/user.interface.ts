@@ -1,11 +1,12 @@
 export interface User {
+  id: string;
   createdAt: Date;
   firstName: string;
   avatar: string;
   email: string;
   lastName: string;
-  id: string;
-  address: Address[];
+  addresses: Address[];
+  contacts: Contact[];
 }
 
 export interface Address {
@@ -18,4 +19,11 @@ export interface Address {
   countryCode: string;
   id: string;
   userId: string;
+}
+
+export interface Contact {
+  id: string;
+  name: string;
+  phoneNumber: string;
+  email: string;
 }
