@@ -13,14 +13,9 @@ export class UsersService {
     private readonly httpService: HttpService,
   ) {}
 
-  createUser(createUserDto: CreateUserDto): void {
-    const { email } = createUserDto;
-
-    const userExist = this.userModel.findOne({ email }).exec();
-
-    if (!userExist) {
-      this.store(createUserDto);
-    }
+  async getUserByEmail(email: string): Promise<User> {
+    const user = this.userModel.findOne({ email }).exec();
+    return user;
   }
 
   private store(createUserDto: CreateUserDto): void {
@@ -30,7 +25,7 @@ export class UsersService {
 
   async findAll(query: Paginate) {
     let users = await this.getUsers(query);
-    users = await this.getUsersData(users);
+    users = await this.processUsers(users);
     return users.map((user) => {
       return {
         id: user.id,
@@ -46,14 +41,14 @@ export class UsersService {
             zipcode: address.zipcode,
           };
         }),
-        contacts: user.contacts.map((contact) => {
+        /*contacts: user.contacts.map((contact) => {
           return {
             contactId: contact.id,
             name: contact.name,
             phoneNumber: contact.phoneNumber,
             email: contact.email,
           };
-        }),
+        }),*/
       };
     });
   }
@@ -75,11 +70,21 @@ export class UsersService {
     } catch {}
   }
 
-  async getUsersData(users: User[]): Promise<User[]> {
+  async processUsers(users: User[]): Promise<User[]> {
     for (const user of users) {
       user.addresses = await this.getAddressByUserId(user.id);
       //user.contacts = await this.getContactByUserId(user.id);
-      const createUserDto = {};
+      const userExist = await this.getUserByEmail(user.email);
+      if (!userExist) {
+        const userDto = new CreateUserDto();
+        userDto.fullName = `${user.firstName} ${user.lastName}`;
+        userDto.email = user.email;
+        userDto.address = user.addresses[0].street;
+        userDto.addressNumber = user.addresses[0].number;
+        userDto.phoneNumber = '123456';
+
+        this.store(userDto);
+      }
     }
 
     return users;

@@ -15,7 +15,7 @@ export interface Address {
   state: string;
   zipcode: string;
   country: string;
-  number: number;
+  number: string;
   countryCode: string;
   id: string;
   userId: string;

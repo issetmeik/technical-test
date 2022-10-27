@@ -8,5 +8,5 @@ export const UserSchema = new mongoose.Schema(
     addressNumber: { type: String },
     phoneNumber: { type: String },
   },
-  { timestamps: true, collection: 'categories' },
+  { timestamps: true, collection: 'users' },
 );
