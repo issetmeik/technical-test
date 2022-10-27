@@ -4,6 +4,7 @@ import { Address, Contact, User } from '../interfaces/user.interface';
 import { Paginate } from 'src/interfaces/paginate.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CreateUserDto } from 'src/dtos/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,11 +13,24 @@ export class UsersService {
     private readonly httpService: HttpService,
   ) {}
 
-  createUser;
+  createUser(createUserDto: CreateUserDto): void {
+    const { email } = createUserDto;
+
+    const userExist = this.userModel.findOne({ email }).exec();
+
+    if (!userExist) {
+      this.store(createUserDto);
+    }
+  }
+
+  private store(createUserDto: CreateUserDto): void {
+    const newUser = new this.userModel(createUserDto);
+    newUser.save();
+  }
+
   async findAll(query: Paginate) {
     let users = await this.getUsers(query);
     users = await this.getUsersData(users);
-
     return users.map((user) => {
       return {
         id: user.id,
@@ -65,6 +79,7 @@ export class UsersService {
     for (const user of users) {
       user.addresses = await this.getAddressByUserId(user.id);
       //user.contacts = await this.getContactByUserId(user.id);
+      const createUserDto = {};
     }
 
     return users;
