@@ -1,10 +1,16 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadGatewayException,
+  BadRequestException,
+  HttpException,
+  Injectable,
+} from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { Address, Contact, User } from '../interfaces/user.interface';
 import { Paginate } from 'src/interfaces/paginate.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from 'src/dtos/create-user.dto';
+import { catchError } from 'rxjs';
 
 @Injectable()
 export class UsersService {
@@ -18,9 +24,8 @@ export class UsersService {
     return user;
   }
 
-  private store(createUserDto: CreateUserDto): void {
-    const newUser = new this.userModel(createUserDto);
-    newUser.save();
+  private store(createUserDto: CreateUserDto[]): void {
+    this.userModel.insertMany(createUserDto);
   }
 
   async findAll(query: Paginate) {
@@ -29,7 +34,7 @@ export class UsersService {
     return users.map((user) => {
       return {
         id: user.id,
-        fullName: `${user.firstName} ${user.lastName}`,
+        fullName: user.fullName,
         email: user.email,
         addresses: user.addresses.map((address) => {
           return {
@@ -41,16 +46,47 @@ export class UsersService {
             zipcode: address.zipcode,
           };
         }),
-        /*contacts: user.contacts.map((contact) => {
+        contacts: user.contacts.map((contact) => {
           return {
             contactId: contact.id,
             name: contact.name,
             phoneNumber: contact.phoneNumber,
             email: contact.email,
           };
-        }),*/
+        }),
       };
     });
+  }
+
+  async processUsers(users: User[]): Promise<User[]> {
+    const newUsers = [];
+
+    for (const user of users) {
+      user.fullName = `${user.firstName} ${user.lastName}`;
+
+      const [userExist, addresses, contacts] = await Promise.all([
+        this.getUserByEmail(user.email),
+        this.getAddressByUserId(user.id),
+        this.getContactByUserId(user.id),
+      ]);
+
+      if (addresses && addresses.length) user.addresses = addresses;
+      if (contacts && contacts.length) user.contacts = contacts;
+
+      if (!userExist) {
+        const userDto = new CreateUserDto();
+
+        userDto.fullName = `${user.firstName} ${user.lastName}`;
+        userDto.email = user.email;
+        userDto.address = user.addresses[0].street;
+        userDto.addressNumber = user.addresses[0].number;
+        userDto.phoneNumber = user.contacts[0].phoneNumber;
+
+        newUsers.push(userDto);
+      }
+    }
+    if (newUsers && newUsers.length) this.store(newUsers);
+    return users;
   }
 
   async getUsers(query: Paginate): Promise<User[]> {
@@ -60,65 +96,55 @@ export class UsersService {
       const { status, data } = await this.httpService
         .get<User[]>(url)
         .toPromise();
-      if (status !== 200) {
-        throw new BadRequestException(
-          `Erro na API MOCK, por favor cheque suas credencias e tente novamente.`,
-        );
-      }
 
       return data;
-    } catch {}
-  }
-
-  async processUsers(users: User[]): Promise<User[]> {
-    for (const user of users) {
-      user.addresses = await this.getAddressByUserId(user.id);
-      //user.contacts = await this.getContactByUserId(user.id);
-      const userExist = await this.getUserByEmail(user.email);
-      if (!userExist) {
-        const userDto = new CreateUserDto();
-        userDto.fullName = `${user.firstName} ${user.lastName}`;
-        userDto.email = user.email;
-        userDto.address = user.addresses[0].street;
-        userDto.addressNumber = user.addresses[0].number;
-        userDto.phoneNumber = '123456';
-
-        this.store(userDto);
-      }
+    } catch (err) {
+      throw new HttpException(
+        'Não foi possivel buscar a collection de usuarios.',
+        err.response.status,
+      );
     }
-
-    return users;
   }
 
   async getAddressByUserId(userId: string): Promise<Address[]> {
-    const url = `https://${process.env.MOCK_API_HOST}.mockapi.io/api/v1/users/${userId}/address`;
+    try {
+      const url = `https://${process.env.MOCK_API_HOST}.mockapi.io/api/v1/users/${userId}/address`;
 
-    const { status, data } = await this.httpService
-      .get<Address[]>(url)
-      .toPromise();
-
-    if (status !== 200) {
-      throw new BadRequestException(
-        `Erro na API MOCK, por favor cheque suas credencias e tente novamente.`,
+      const { status, data } = await this.httpService
+        .get<Address[]>(url)
+        .toPromise();
+      return data;
+    } catch (err) {
+      if (err.response.status === 429) {
+        throw new HttpException(
+          'Por favor use paginação e diminua a quantidade de usuarios, recomendamos no máximo 10 usuarios por requisição..',
+          err.response.status,
+        );
+      }
+      throw new HttpException(
+        'Não foi possivel buscar os dados de endereço do usuário informado.',
+        err.response.status,
       );
     }
-
-    return data;
   }
 
   async getContactByUserId(userId: string): Promise<Contact[]> {
-    const url = `https://62151ae9cdb9d09717adf48c.mockapi.io/api/v1/users/${userId}/contact`;
+    try {
+      const url = `https://${process.env.MOCK_API_HOST}.mockapi.io/api/v1/users/${userId}/contacts`;
+      const { data } = await this.httpService.get<Contact[]>(url).toPromise();
 
-    const { status, data } = await this.httpService
-      .get<Contact[]>(url)
-      .toPromise();
-
-    if (status !== 200) {
-      throw new BadRequestException(
-        `Erro na API MOCK, por favor cheque suas credencias e tente novamente.`,
+      return data;
+    } catch (err) {
+      if (err.response.status === 429) {
+        throw new HttpException(
+          'Por favor use paginação e diminua a quantidade de usuarios, recomendamos no máximo 10 usuarios por requisição..',
+          err.response.status,
+        );
+      }
+      throw new HttpException(
+        'Não foi possivel buscar os dados de contato do usuário informado.',
+        err.response.status,
       );
     }
-
-    return data;
   }
 }

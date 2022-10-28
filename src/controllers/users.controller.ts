@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { query } from 'express';
 import { Paginate } from 'src/interfaces/paginate.interface';
 import { UsersService } from '../services/users.service';
