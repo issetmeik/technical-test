@@ -58,7 +58,8 @@ Para cada variável de ambiente você precisa substituir por seus **próprios da
 
 Feito as instruções, agora é a hora de usar o nosso sistema:
 
-1. Link para obter as rotas de api no POSTMAN **https://www.postman.com/grey-eclipse-90386/workspace/desafiotech-junior**.
+1. Rota health:
+   ![alt text](./imgs/health.jpeg)
 2. A rota api/users suporta parâmetros de paginação, que podem ser utilizados através da queryString para realizar a listagem completa de dados.
 3. Para melhor funcionamento do sistema recomendamos que busquem apenas 10 usuários por vez.
 
