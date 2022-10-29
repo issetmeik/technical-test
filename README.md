@@ -9,10 +9,10 @@ Esse projeto visa integrar com uma API externa, essa API nos fornece uma collect
 - [Características](#características)
 - [Setup](#setup)
   - [Pré-requisitos](#pre-requisitos)
-  - [Instructions](#instructions)
-- [Docker](#docker)
-- [Technologies](#technologies)
-- [Environment](#environment)
+  - [Instruções](#instruções)
+- [Start](#start)
+- [Tecnologias](#tecnologias)
+- [Ambiente](#ambiente)
 
 ## Características
 
@@ -31,7 +31,7 @@ Esse projeto visa integrar com uma API externa, essa API nos fornece uma collect
 - [MongoDB](https://www.mongodb.com/try) -> Para configurar localmente ou usar o cluster MongoDB Atlas
 - [Mockapi](https://www.mockapi.io) -> Para integração com o mockapi, crie uma conta e pegue a chave da API
 
-### Instructions
+### Instruções
 
 Feito os pré-requisitos, o próximo passo é seguir estas instruções:
 
@@ -51,52 +51,31 @@ VERSION=1.0.0
 
 Para cada variável de ambiente você precisa substituir por seus **próprios dados configurados**.
 
-5. Com a configuração concluída, você só precisa testar a execução do **npm run dev** OU **npm run docker**
-6. Se tudo estiver OK, você deve testar o status do servidor através do endpoint: **seu_dominio:sua_porta/api/health** que retorna um JSON com informações básicas e o terminal deve mostrar um log como `{ "status": "ok", "info": { "mongoose": { "status": "up" } }, "error": {}, "details": { "mongoose": { "status": "up" } }, "version": "1.0.0" }`.
+5. Com a configuração concluída, você só precisa testar a execução do **npm run start:dev**
+6. Se tudo estiver OK, você deve testar o status do servidor através do endpoint: **seu_dominio:sua_porta/api/health** que retorna um JSON com informações básicas como: `{ "status": "ok", "info": { "mongoose": { "status": "up" } }, "error": {}, "details": { "mongoose": { "status": "up" } }, "version": "1.0.0" }`.
 7. Divirta-se! :D
 
-## Docker
+## Start
 
-Este projeto é compatível com o Docker e usei a seguinte configuração para configurar o projeto com o Docker:
+Feito as instruções, agora é a hora de usar o nosso sistema:
 
-**Dockerfile**
-
-```Dockerfile
-FROM node:lts-alpine
-
-WORKDIR /usr/src/app/
-
-COPY package*.json ./
-W
-RUN npm install --production
-
-COPY . .
-
-RUN chmod +x docker.entrypoint.sh
-ENTRYPOINT [ "./docker.entrypoint.sh" ]
-```
-
-**docker.entrypoint.sh**
-
-```sh
-#!/bin/sh
-npm run start
-```
+1. Link para obter as rotas de api no POSTMAN **https://www.postman.com/grey-eclipse-90386/workspace/desafiotech-junior**.
+2. A rota api/users suporta parâmetros de paginação, que podem ser utilizados através da queryString para realizar a listagem completa de dados.
+3. Para melhor funcionamento do sistema recomendamos que busquem apenas 10 usuários por vez.
 
 ## Tecnologias
 
 - :star: Node.js
-- :star: Nest.api
+- :star: Nestjs
 - :star: Moongose
 - :star: MongoDB Atlas
-- :star: Docker
 - :star: Mockapi
 
 ## Ambiente
 
 - :desktop_computer: Visual Studio Code para codificação
 - :desktop_computer: MongoDB Compass para gerenciamento de banco de dados
-- :desktop_computer: Insomnia para testes de API
+- :desktop_computer: Postman para testes de API
 - :desktop_computer: Git para versionamento de código
 - :desktop_computer: Spotify para focar
 - :desktop_computer: Stack Overflow para debug
