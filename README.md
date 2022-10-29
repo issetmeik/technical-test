@@ -8,7 +8,7 @@ Esse projeto visa integrar com uma API externa, essa API nos fornece uma collect
 - [Índice](#indice)
 - [Características](#características)
 - [Setup](#setup)
-  - [Pré-requisitos](#pre-requisitos)
+  - [Pré-requisitos](#pré-requisitos)
   - [Instruções](#instruções)
 - [Start](#start)
 - [Tecnologias](#tecnologias)
@@ -25,7 +25,7 @@ Esse projeto visa integrar com uma API externa, essa API nos fornece uma collect
 
 ### Pré-requisitos
 
-- [Node 14.17.5 LTS](https://nodejs.org/en/) -> Para rodar a aplicação
+- [Node 16.0.0 LTS](https://nodejs.org/en/) -> Para rodar a aplicação
 - [NPM](https://www.npmjs.com) -> Para instalar e usar os scripts package.json
 - [MongoDB](https://www.mongodb.com/try) -> Para configurar localmente ou usar o cluster MongoDB Atlas
 - [Mockapi](https://www.mockapi.io) -> Para integração com o mockapi, crie uma conta e pegue a chave da API
