@@ -58,10 +58,12 @@ Para cada variável de ambiente você precisa substituir por seus **próprios da
 
 Feito as instruções, agora é a hora de usar o nosso sistema:
 
-1. Rota health:
+1. api/health:
    ![alt text](./imgs/health.jpeg)
-2. A rota api/users suporta parâmetros de paginação, que podem ser utilizados através da queryString para realizar a listagem completa de dados.
-3. Para melhor funcionamento do sistema recomendamos que busquem apenas 10 usuários por vez.
+2. api/users:
+   ![alt text](./imgs/users.jpeg)
+3. A rota **api/users** suporta parâmetros de paginação, que podem ser utilizados através da queryString para realizar a listagem completa de dados.
+4. Para melhor funcionamento do sistema recomendamos que busquem apenas 10 usuários por vez.
 
 ## Tecnologias
 
@@ -75,7 +77,7 @@ Feito as instruções, agora é a hora de usar o nosso sistema:
 
 - :desktop_computer: Visual Studio Code para codificação
 - :desktop_computer: MongoDB Compass para gerenciamento de banco de dados
-- :desktop_computer: Postman para testes de API
+- :desktop_computer: Insomnia para testes de API
 - :desktop_computer: Git para versionamento de código
 - :desktop_computer: Spotify para focar
 - :desktop_computer: Stack Overflow para debug
