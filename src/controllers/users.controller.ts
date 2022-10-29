@@ -1,5 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
-import { query } from 'express';
+import { Controller, Get, Query, ValidationPipe } from '@nestjs/common';
 import { Paginate } from 'src/interfaces/paginate.interface';
 import { UsersService } from '../services/users.service';
 
@@ -8,8 +7,16 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('')
-  async findAll(@Query() query: Paginate) {
-    console.log(query);
+  async findAll(
+    @Query(
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+        forbidNonWhitelisted: true,
+      }),
+    )
+    query: Paginate,
+  ) {
     return await this.usersService.findAll(query);
   }
 }

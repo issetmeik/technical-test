@@ -76,7 +76,7 @@ export class UsersService {
       if (!userExist) {
         const userDto = new CreateUserDto();
 
-        userDto.fullName = `${user.firstName} ${user.lastName}`;
+        userDto.fullName = user.fullName;
         userDto.email = user.email;
         userDto.address = user.addresses[0].street;
         userDto.addressNumber = user.addresses[0].number;
