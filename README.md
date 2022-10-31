@@ -1,73 +1,83 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Desafiotech-junior
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Esse projeto visa integrar com uma API externa, essa API nos fornece uma collection de usuários, e também informações sobre endereço do mesmo e lista de contatos. Então fazemos o processamento e salvamos o usuário com seus respectivos endereços e contatos.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Indice
 
-## Description
+- [Desafiotech-junior](#Desafiotech-junior)
+- [Índice](#indice)
+- [Características](#características)
+- [Setup](#setup)
+  - [Pré-requisitos](#pré-requisitos)
+  - [Instruções](#instruções)
+- [Start](#start)
+- [Tecnologias](#tecnologias)
+- [Ambiente](#ambiente)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Características
 
-## Installation
+- Integrando o sistema Mockapi, recebendo todos os usuários.
+- Integrando com mockapi, recebendo endereços de cada usuário.
+- Integrando com mockapi, recebendo contatos de cada usuário.
+- Processando os usuários, com seus endereços, e persistindo no MONGODB.
 
-```bash
-$ npm install
+## Setup
+
+### Pré-requisitos
+
+- [Node 16.0.0 LTS](https://nodejs.org/en/) -> Para rodar a aplicação
+- [NPM](https://www.npmjs.com) -> Para instalar e usar os scripts package.json
+- [MongoDB](https://www.mongodb.com/try) -> Para configurar localmente ou usar o cluster MongoDB Atlas
+- [Mockapi](https://www.mockapi.io) -> Para integração com o mockapi, crie uma conta e pegue a chave da API
+
+### Instruções
+
+Feito os pré-requisitos, o próximo passo é seguir estas instruções:
+
+1. Clonar o repositório.
+2. Abra o terminal na pasta raiz do projeto e digite "npm install" para instalar todas as dependências.
+3. Crie um arquivo chamado ".env" na raiz do projeto.
+4. Use o seguinte código no arquivo criado:
+
+# LOCAL
+
+```env
+MONGODB_URI='mongodb+srv://<YOUR_HOST>'
+MOCK_API_HOST=<YOUR_MOCKAPI_KEY>
+API_PORT=4000
+VERSION=1.0.0
 ```
 
-## Running the app
+Para cada variável de ambiente você precisa substituir por seus **próprios dados configurados**.
 
-```bash
-# development
-$ npm run start
+5. Com a configuração concluída, você só precisa testar a execução do **npm run start:dev**
+6. Se tudo estiver OK, você deve testar o status do servidor através do endpoint: **seu_dominio:sua_porta/api/health** que retorna um JSON com informações básicas como: `{ "status": "ok", "info": { "mongoose": { "status": "up" } }, "error": {}, "details": { "mongoose": { "status": "up" } }, "version": "1.0.0" }`.
+7. Divirta-se! :D
 
-# watch mode
-$ npm run start:dev
+## Start
 
-# production mode
-$ npm run start:prod
-```
+Feito as instruções, agora é a hora de usar o nosso sistema:
 
-## Test
+1. api/health:
+   ![alt text](./imgs/health.jpeg)
+2. api/users:
+   ![alt text](./imgs/users.jpeg)
+3. A rota **api/users** suporta parâmetros de paginação, que podem ser utilizados através da queryString para realizar a listagem completa de dados.
+4. Para melhor funcionamento do sistema recomendamos que busquem apenas 10 usuários por vez.
 
-```bash
-# unit tests
-$ npm run test
+## Tecnologias
 
-# e2e tests
-$ npm run test:e2e
+- :star: Node.js
+- :star: Nestjs
+- :star: Moongose
+- :star: MongoDB Atlas
+- :star: Mockapi
 
-# test coverage
-$ npm run test:cov
-```
+## Ambiente
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- :desktop_computer: Visual Studio Code para codificação
+- :desktop_computer: MongoDB Compass para gerenciamento de banco de dados
+- :desktop_computer: Insomnia para testes de API
+- :desktop_computer: Git para versionamento de código
+- :desktop_computer: Spotify para focar
+- :desktop_computer: Stack Overflow para debug
