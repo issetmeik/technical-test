@@ -1,4 +1,10 @@
-import { Controller, Get, Query, ValidationPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Paginate } from 'src/interfaces/paginate.interface';
 import { UsersService } from '../services/users.service';
 
@@ -7,14 +13,9 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('')
+  @UsePipes(ValidationPipe)
   async findAll(
-    @Query(
-      new ValidationPipe({
-        transform: true,
-        transformOptions: { enableImplicitConversion: true },
-        forbidNonWhitelisted: true,
-      }),
-    )
+    @Query()
     query: Paginate,
   ) {
     return await this.usersService.findAll(query);
