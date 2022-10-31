@@ -117,7 +117,7 @@ export class UsersService {
     } catch (err) {
       if (err.response.status === 429) {
         throw new HttpException(
-          'Por favor use paginação e diminua a quantidade de usuarios, recomendamos no máximo 10 usuarios por requisição..',
+          'Por favor use paginação e diminua a quantidade de usuarios, recomendamos no máximo 10 usuarios por requisição.',
           err.response.status,
         );
       }
@@ -137,7 +137,7 @@ export class UsersService {
     } catch (err) {
       if (err.response.status === 429) {
         throw new HttpException(
-          'Por favor use paginação e diminua a quantidade de usuarios, recomendamos no máximo 10 usuarios por requisição..',
+          'Por favor use paginação e diminua a quantidade de usuarios, recomendamos no máximo 10 usuarios por requisição.',
           err.response.status,
         );
       }
