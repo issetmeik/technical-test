@@ -1,6 +1,6 @@
-## Desafiotech-junior
+## Teste Técnico
 
-Esse projeto visa integrar com uma API externa, essa API nos fornece uma collection de usuários, e também informações sobre endereço do mesmo e lista de contatos. Então fazemos o processamento e salvamos o usuário com seus respectivos endereços e contatos.
+Este projeto foi desenvolvido como parte de um teste técnico para uma empresa, no qual fui aprovado. O objetivo do projeto é integrar com uma API externa que fornece uma coleção de usuários, incluindo informações sobre seus endereços e lista de contatos. A partir desses dados, realizamos o processamento e salvamos o usuário juntamente com seus respectivos endereços e contatos
 
 ## Indice
 
